@@ -1,0 +1,23 @@
+{
+  "name": "check_passengers_demo",
+  "version": "1.0.0",
+  "description": "予約時の人数と乗車人数をブロックチェーン上で確認します。 zkproofを使用して、履歴は残しません。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Hiro20220528/check_passengers_DEMO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Hiro20220528/check_passengers_DEMO/issues"
+  },
+  "homepage": "https://github.com/Hiro20220528/check_passengers_DEMO#readme",
+  "devDependencies": {
+    "hardhat": "^2.15.0"
+  }
+}
