@@ -1,3 +1,3 @@
 // SPDX-License-Identifier: MIT
-import "./verify.sol";
+import "./verifier.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";

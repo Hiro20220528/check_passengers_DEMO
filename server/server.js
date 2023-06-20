@@ -20,16 +20,21 @@ app.get('/', (req, res) => {
 });
 
 // 乗車人数予約画面 get
-app.get('/reserve', (req, res) => {
-          res.sendFile(__dirname + '/public/reserve.html');
+app.get('/booking', (req, res) => {
+          res.sendFile(__dirname + '/public/booking.html');
 });
 
 // 乗車人数確定画面へpost
-
-
-
+app.post('/driver-confirm', (req, res) => {
+          console.log(req.body);
+          // input.jsonを生成する
+          res.sendFile(__dirname + '/public/driver_confirmation.html');
+});
 
 // 乗車人数確定画面 get
+app.get('/driver-confirm', (req, res) => {
+          res.sendFile(__dirname + '/public/driver_confirmation.html');
+});
 
 
 // サーバーを起動
