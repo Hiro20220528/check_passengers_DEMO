@@ -6,6 +6,27 @@
           <title>運転手用乗車人数確認サイト</title>
 </head>
 <body>
-          
+          <h2>乗車人数確認デモサイト</h2>
+          <h3>運転手用</h3>
+
+          <h4>ステップ(1)</h4>
+          <p>以下のQRコードから同乗者の人にサイトを共有してください。</p>
+          <img src="./passengers_lab.svg" alt="デモサイトのリンク">
+
+          <h4>ステップ(2)</h4>
+          <p>全員の用意ができればスタートボタンをタップしてください。</p>
+          <button id="start" class="button">start</button>
+
+          <h4>ステップ(3)</h4>
+          <p>5秒以内に乗車中ボタンをタップしてください。</p>
+
+          <button id="ride" class="button">tap</button>
+
+          <h6>[注意]</h6>
+          <p>乗車する人全員でボタンをタップしてください。</p>
+          <p>人数は予約時の人数と同じかカウントされています。</p>
+
+          <script src="/socket.io/socket.io.js"></script>
+          <script src="./js/socket_io.js"></script>
 </body>
 </html>

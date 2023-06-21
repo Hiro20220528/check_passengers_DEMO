@@ -2,7 +2,8 @@ const express = require('express');
 const app = express();
 const http = require('http')
 const server = http.createServer(app);
-const io = require('socket.io')(server);
+// const io = require('socket.io')(server);
+require('./server_socket_io')(server);
 const PORT = 3000;
 const path = require('path');
 const fs = require('fs').promises; // jsonファイルを読み込むために必要
@@ -13,6 +14,12 @@ const bodyParser = require('body-parser'); // post bodyを受け取る
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public'))); // publicフォルダの中身を静的ファイル
+
+// input.jsonのパス
+input_json_path = "./zkproof/count_js/input.json";
+max_passengers = "6"; // 最大乗車人数
+
+var user_id = 0; // ユーザーのID
 
 // ページ一覧を表示 get
 app.get('/', (req, res) => {
@@ -25,9 +32,15 @@ app.get('/booking', (req, res) => {
 });
 
 // 乗車人数確定画面へpost
-app.post('/driver-confirm', (req, res) => {
-          console.log(req.body);
+app.post('/driver-confirm', async(req, res) => {
+          const count = 0; // 乗員がタップした回数を数える数を初期化
+          const booking_number = req.body.passengers; // 乗車人数を取得
+          user_id += 1; // ユーザーを増やして、別の:idを作成する
+          // urlのqrコードを生成する
+
+          console.log(booking_number);
           // input.jsonを生成する
+          await write_input_json(input_json_path, booking_number, null, max_passengers);
           res.sendFile(__dirname + '/public/driver_confirmation.html');
 });
 
@@ -41,4 +54,28 @@ app.get('/driver-confirm', (req, res) => {
 server.listen(PORT, () => {
           console.log('lisning on *:3000');
 });
+
+async function write_input_json(json_path, reserved = 0, passengers = 0, max_passengers = 0) {
+          try {
+                    await fs.writeFile(json_path, JSON.stringify({"reserved": `${reserved}`, "passengers": `${passengers}`, "max_passengers": `${max_passengers}`}));
+                    console.log('write success');
+          } catch (err) {
+                    console.error(err);
+          }
+}
+
+async function read_input_json(json_path) {
+          try{
+                    const data = await fs.readFile(json_path, 'utf-8', (err) => {
+                              if (err) {
+                                        console.log(err);
+                                        return;
+                              }
+                    });
+                    console.log(data);
+                    return data;
+          } catch (err) {
+                    console.error(err);
+          }
+}
         
