@@ -1,12 +1,11 @@
 
 let startBottom = document.getElementById('start');
-let rideBottom = document.getElementById('ride');
 
 let user_id; // ユーザーのID
+let ride_count = 0; // 乗車ボタンが押された回数
 
 // 最初は乗車中ボタンを押せないようにする
 window.onload = function() {
-          rideBottom.disabled = true;
           // user_idを取得する
           fetch('/user-id')
           .then(responce => responce.json())
@@ -33,5 +32,6 @@ startBottom.addEventListener('click', function() {
 
 socket.on('ride', () => {
           console.log('ride');
-          rideBottom.disabled = false;
+          ride_count += 1;
+          // rideBottom.disabled = false;
 });
