@@ -9,6 +9,8 @@ const path = require('path');
 const fs = require('fs').promises; // jsonファイルを読み込むために必要
 const util = require('util');
 const child_process = require('child_process');
+const qr_code = require('qrcode'); // urlのqrコードを生成する
+const qr_dir = path.join(__dirname, 'public/qrcode'); // qrコードを保存するディレクトリ
 
 const bodyParser = require('body-parser'); // post bodyを受け取る
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -18,8 +20,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // publicフォルダ�
 // input.jsonのパス
 input_json_path = "./zkproof/count_js/input.json";
 max_passengers = "6"; // 最大乗車人数
-
-var user_id = 0; // ユーザーのID
+var user_id = 2104; // ユーザーのID
 
 // ページ一覧を表示 get
 app.get('/', (req, res) => {
@@ -35,18 +36,39 @@ app.get('/booking', (req, res) => {
 app.post('/driver-confirm', async(req, res) => {
           const count = 0; // 乗員がタップした回数を数える数を初期化
           const booking_number = req.body.passengers; // 乗車人数を取得
-          user_id += 1; // ユーザーを増やして、別の:idを作成する
-          // urlのqrコードを生成する
 
           console.log(booking_number);
+
           // input.jsonを生成する
           await write_input_json(input_json_path, booking_number, null, max_passengers);
           res.sendFile(__dirname + '/public/driver_confirmation.html');
 });
 
+app.get('/user-id', async(req, res) => {
+          user_id += 1; // ユーザーを増やして、別の:idを作成する
+          // urlのqrコードを生成する
+          qr_code.toFile(`${qr_dir}/qr_code_${user_id}.svg`, `http://192.168.0.151:3000/passengers/:${user_id}`, {
+                    scale: 3, // QRコードのサイズ
+                    color: {
+                              dark: '#000000', // 前景色
+                              light: '#ffffff' // 背景色
+                    }
+          }, (err) => {
+                    if (err) throw err;
+                    console.log('QRコードを生成しました');
+          });
+          res.json({user_id: user_id});
+});
+
 // 乗車人数確定画面 get
 app.get('/driver-confirm', (req, res) => {
           res.sendFile(__dirname + '/public/driver_confirmation.html');
+});
+
+app.get('/passengers/:id', (req, res) => {
+          // console.log(req.params.id);
+          let passengers_id = req.params.id
+          res.sendFile(__dirname + '/public/passengers_confirmation.html');
 });
 
 

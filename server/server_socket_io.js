@@ -8,22 +8,30 @@ module.exports = (server) => {
           io.on('connection', (socket) => {
                     console.log('a user connected');
 
+                    // userがjoinしたときの処理
+                    socket.on('join', (room) => {
+                              console.log(`join ${room}`);
+                              socket.join(room);
+                    });
+
                     // driverがstartしたときの処理
-                    socket.on('start', () => {
+                    socket.on('start', (room) => {
                               console.log('start');
-                              io.emit('start');
-                    
+                              io.to(room).emit('start');
+                              console.log(typeof(room));
+                              console.log(room);
                               // 5秒後にボタンを有効化
                               setTimeout(async() => {
-                                        io.emit('disable');
+                                        io.to(room).emit('disable');
                                         // await zkproof();
                               }, 5000);
                     });
                     
                     // userがrideしたときの処理
-                    socket.on('ride', () => {
-                              count++;
-                              console.log(`click ${count}`);
+                    socket.on('ride', (room) => {
+                              // count++;
+                              socket.to(room).emit('ride');
+                              // console.log(`click ${count}`);
                     });
 
                     // userが切断した時の処理
