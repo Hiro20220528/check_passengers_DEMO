@@ -17,11 +17,15 @@ window.onload = function() {
                     socket.emit('join', user_id);
                     console.log(typeof(user_id));
                     let qr_code = document.getElementById('qr_code');
-                    qr_code.src = `../qrcode/qr_code_${user_id}.svg`;
+                    qr_code.src = `./qrcode/qr_code_${user_id}.svg`;
+                    // qr_code.src = `server/public/qrcode/qr_code_${user_id}.svg`;
+                    
                     let room_id = document.getElementById('room_id');
                     room_id.innerHTML = `あなたのルーム番号は ${user_id} です。`;
           });
 }
+
+
 // startボタンが押されると、startイベントを送信する
 startBottom.addEventListener('click', function() {
           console.log('start clicked');

@@ -45,23 +45,23 @@ app.post('/driver-confirm', async (req, res) => {
           res.sendFile(__dirname + '/public/driver_confirmation.html');
 });
 
-app.get('/user-id', async (req, res) => {
+app.get('/user-id', (req, res) => {
+          console.log('user-id');
           user_id += 1; // ユーザーを増やして、別の:idを作成する
           // urlのqrコードを生成する
-          await new Promise(() => {
-                    qr_code.toFile(`${qr_dir}/qr_code_${user_id}.svg`, `http://192.168.0.151:3000/passengers/:${user_id}`, {
-                              scale: 3, // QRコードのサイズ
-                              color: {
-                                        dark: '#000000', // 前景色
-                                        light: '#ffffff' // 背景色
-                              }
-                    }, (err) => {
-                              if (err) throw err;
-                              console.log('QRコードを生成しました');
-                    });
+          qr_code.toFile(`${qr_dir}/qr_code_${user_id}.svg`, `http://192.168.0.151:3000/passengers/:${user_id}`, {
+                    scale: 3, // QRコードのサイズ
+                    color: {
+                              dark: '#000000', // 前景色
+                              light: '#ffffff' // 背景色
+                    }
+          }, (err) => {
+                    if (err) throw err;
+                    console.log('QRコードを生成しました');
           });
-
+          console.log(user_id);
           res.json({ user_id: user_id });
+
 });
 
 // 乗車人数確定画面 get
