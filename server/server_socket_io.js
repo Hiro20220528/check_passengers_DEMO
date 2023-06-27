@@ -22,7 +22,7 @@ module.exports = (server) => {
                     
                     // userがrideしたときの処理
                     socket.on('ride', () => {
-                              count++;
+                              // count++;
                               console.log(`click ${count}`);
                     });
 

@@ -18,7 +18,6 @@ app.use(express.static(path.join(__dirname, 'public'))); // publicフォルダ�
 // input.jsonのパス
 input_json_path = "./zkproof/count_js/input.json";
 max_passengers = "6"; // 最大乗車人数
-
 var user_id = 0; // ユーザーのID
 
 // ページ一覧を表示 get
