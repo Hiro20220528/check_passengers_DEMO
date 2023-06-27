@@ -23,3 +23,14 @@ rideBottom.addEventListener('click', function() {
           // 複数回押せないようにする
           rideBottom.disabled = true;
 });
+
+// startが押されると、乗車中ボタンを押せるようにする
+socket.on('start', function() {
+          console.log('start');
+          rideBottom.disabled = false;
+});
+
+// ボタンを無効化する
+socket.on('disable', function() {
+          rideBottom.disabled = true;
+});
