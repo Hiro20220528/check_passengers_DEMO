@@ -24,6 +24,7 @@ module.exports = (server) => {
                               setTimeout(async() => {
                                         io.to(room).emit('disable');
                                         // await zkproof();
+                                        // 証明を生成する
                               }, 5000);
                     });
                     

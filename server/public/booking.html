@@ -11,7 +11,19 @@
           <form action="driver-confirm" method="POST">
                     <label for="passengers">乗車人数 :</label>
                     <input type="number" id="passengers" name="passengers" autocomplete="off">
-                    <input type="submit" value="予約">
+                    <input type="submit" id='submit' value="予約">
           </form>
+          <script>  
+                    const submit_bottom = document.getElementById('submit');
+                    // const passengers = document.getElementById('passengers');
+                    submit_bottom.addEventListener('click', () => {
+                              console.log(passengers.value);
+                              localStorage.setItem('booking_number',JSON.stringify(passengers.value));
+                    });
+                    // passengers.addEventListener('change', () => {
+                    //              console.log(passengers.value);
+                    //           sessionStorage.setItem('booking_number',JSON.stringify(passengers.value));
+                    // });
+          </script>
 </body>
 </html>

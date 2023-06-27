@@ -10,18 +10,42 @@ const fs = require('fs').promises; // jsonファイルを読み込むために�
 const util = require('util');
 const child_process = require('child_process');
 const qr_code = require('qrcode'); // urlのqrコードを生成する
-const qr_dir = path.join(__dirname, 'public/qrcode'); // qrコードを保存するディレクトリ
-
+const qr_dir = path.join(__dirname, 'public/qrcode/'); // qrコードを保存するディレクトリ
+// qr_dirの絶対パス
+// const qr_dir_path = path.join(__dirname, 'public/qrcode');
 const bodyParser = require('body-parser'); // post bodyを受け取る
-const { rejects } = require('assert');
+// const { rejects } = require('assert'); // jsonファイルを読み込むために必要
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public'))); // publicフォルダの中身を静的ファイル
+
+const home_ip_address = '192.168.0.151';
+const lab_ip_address = '';
+
+const ip_address = home_ip_address; // ここのipアドレスを変更する
 
 // input.jsonのパス
 input_json_path = "./zkproof/count_js/input.json";
 max_passengers = "6"; // 最大乗車人数
 var user_id = 2104; // ユーザーのID
+user_id = Math.floor(Math.random() * 10000); // ユーザーのIDをランダムに生成
+
+// qrcodeディレクトリを掃除する
+// console.log(qr_dir);
+// fs.readdir(qr_dir, (err, files) => {
+//           console.log(files);
+//           if (err) throw err;
+//           console.log("qr_dirの中身を削除中...");
+//           for (const file of files) {
+//                     if (path.extname(file) === '.svg') {
+//                               fs.unlink(path.join(qr_dir, file), err => {
+//                                         if (err) throw err;
+//                               });
+//                     }
+//           }
+// });
+// console.log("qr_dirの中身を削除完了");
+
 
 // ページ一覧を表示 get
 app.get('/', (req, res) => {
@@ -49,7 +73,7 @@ app.get('/user-id', (req, res) => {
           console.log('user-id');
           user_id += 1; // ユーザーを増やして、別の:idを作成する
           // urlのqrコードを生成する
-          qr_code.toFile(`${qr_dir}/qr_code_${user_id}.svg`, `http://192.168.0.151:3000/passengers/:${user_id}`, {
+          qr_code.toFile(`${qr_dir}qr_code_${user_id}.svg`, `http://${ip_address}:${PORT}/passengers/:${user_id}`, {
                     scale: 3, // QRコードのサイズ
                     color: {
                               dark: '#000000', // 前景色
@@ -77,7 +101,7 @@ app.get('/passengers/:id', (req, res) => {
 
 
 // サーバーを起動
-server.listen(PORT, () => {
+server.listen(PORT,() => {
           console.log('lisning on *:3000');
 });
 

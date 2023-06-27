@@ -11,7 +11,7 @@ window.onload = function() {
           console.log(typeof(user_id));
           socket.emit('join', user_id);
           let qr_code = document.getElementById('qr_code');
-          qr_code.src = `../qrcode/qr_code_${user_id}.svg`;
+          qr_code.src = `../qrcode/qr_code_${user_id}.svg`; // ../で指定しないといけない
           let room_id = document.getElementById('room_id');
           room_id.innerHTML = `あなたのルーム番号は ${user_id} です。`;
 }

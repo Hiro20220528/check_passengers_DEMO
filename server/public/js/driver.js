@@ -2,12 +2,16 @@
 let startBottom = document.getElementById('start');
 
 let user_id; // ユーザーのID
-let ride_count = 0; // 乗車ボタンが押された回数
+let ride_count = 1; // 乗車ボタンが押された回数 (初期値は1)
+let booking_count;
 
 // 最初は乗車中ボタンを押せないようにする
 window.onload = function() {
           // user_idを取得する
           console.log('onload');
+          let booking_number = JSON.parse(localStorage.getItem('booking_number'));
+          localStorage.clear();
+          console.log(booking_number);
           fetch('/user-id')
           .then(responce => responce.json())
           .then(data => {
@@ -17,9 +21,7 @@ window.onload = function() {
                     socket.emit('join', user_id);
                     console.log(typeof(user_id));
                     let qr_code = document.getElementById('qr_code');
-                    qr_code.src = `./qrcode/qr_code_${user_id}.svg`;
-                    // qr_code.src = `server/public/qrcode/qr_code_${user_id}.svg`;
-                    
+                    qr_code.src = `./qrcode/qr_code_${user_id}.svg`; // ./で指定しないといけない
                     let room_id = document.getElementById('room_id');
                     room_id.innerHTML = `あなたのルーム番号は ${user_id} です。`;
           });
