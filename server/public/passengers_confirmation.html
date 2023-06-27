@@ -3,9 +3,28 @@
 <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>乗客用人数確認サイト</title>
+          <title>同乗者用乗車人数確認サイト</title>
 </head>
 <body>
+          <h2>乗車人数確認デモサイト</h2>
+          <h3>同乗者用</h3>
+
+          <p id="room_id"></p>
           
+          <h4>運転手がスタートボタンをタップした後、5秒以内に以下のボタンをタップしてください。</h4>
+
+          <button id="ride" class="button">tap</button>
+
+
+          <h6>[注意]</h6>
+          <p>乗車する人全員でボタンをタップしてください。</p>
+          <p>人数は予約時の人数と同じかカウントされています。</p>
+
+          <h5>このサイトを共有するにはこちらから</h5>
+
+          <img id="qr_code" src="" alt="デモサイトのリンク">
+          <script src="/socket.io/socket.io.js"></script>
+          <script src="../js/front_socket_io.js"></script>
+          <script src="../js/passengers.js"></script>
 </body>
 </html>

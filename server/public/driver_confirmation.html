@@ -11,7 +11,9 @@
 
           <h4>ステップ(1)</h4>
           <p>以下のQRコードから同乗者の人にサイトを共有してください。</p>
-          <img src="./passengers_lab.svg" alt="デモサイトのリンク">
+          
+          <p id="room_id"></p>
+          <img id="qr_code" src="" alt="デモサイトのリンク">
 
           <h4>ステップ(2)</h4>
           <p>全員の用意ができればスタートボタンをタップしてください。</p>
@@ -27,6 +29,7 @@
           <p>人数は予約時の人数と同じかカウントされています。</p>
 
           <script src="/socket.io/socket.io.js"></script>
-          <script src="./js/front_socket_io.js"></script>
+          <script src="../js/front_socket_io.js"></script>
+          <script src="../js/driver.js"></script>
 </body>
 </html>
