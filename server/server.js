@@ -13,6 +13,7 @@ const qr_code = require('qrcode'); // urlのqrコードを生成する
 const qr_dir = path.join(__dirname, 'public/qrcode'); // qrコードを保存するディレクトリ
 
 const bodyParser = require('body-parser'); // post bodyを受け取る
+const { rejects } = require('assert');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use(express.static(path.join(__dirname, 'public'))); // publicフォルダの中身を静的ファイル
@@ -33,7 +34,7 @@ app.get('/booking', (req, res) => {
 });
 
 // 乗車人数確定画面へpost
-app.post('/driver-confirm', async(req, res) => {
+app.post('/driver-confirm', async (req, res) => {
           const count = 0; // 乗員がタップした回数を数える数を初期化
           const booking_number = req.body.passengers; // 乗車人数を取得
 
@@ -44,20 +45,23 @@ app.post('/driver-confirm', async(req, res) => {
           res.sendFile(__dirname + '/public/driver_confirmation.html');
 });
 
-app.get('/user-id', async(req, res) => {
+app.get('/user-id', async (req, res) => {
           user_id += 1; // ユーザーを増やして、別の:idを作成する
           // urlのqrコードを生成する
-          qr_code.toFile(`${qr_dir}/qr_code_${user_id}.svg`, `http://192.168.0.151:3000/passengers/:${user_id}`, {
-                    scale: 3, // QRコードのサイズ
-                    color: {
-                              dark: '#000000', // 前景色
-                              light: '#ffffff' // 背景色
-                    }
-          }, (err) => {
-                    if (err) throw err;
-                    console.log('QRコードを生成しました');
+          await new Promise(() => {
+                    qr_code.toFile(`${qr_dir}/qr_code_${user_id}.svg`, `http://192.168.0.151:3000/passengers/:${user_id}`, {
+                              scale: 3, // QRコードのサイズ
+                              color: {
+                                        dark: '#000000', // 前景色
+                                        light: '#ffffff' // 背景色
+                              }
+                    }, (err) => {
+                              if (err) throw err;
+                              console.log('QRコードを生成しました');
+                    });
           });
-          res.json({user_id: user_id});
+
+          res.json({ user_id: user_id });
 });
 
 // 乗車人数確定画面 get
@@ -79,7 +83,7 @@ server.listen(PORT, () => {
 
 async function write_input_json(json_path, reserved = 0, passengers = 0, max_passengers = 0) {
           try {
-                    await fs.writeFile(json_path, JSON.stringify({"reserved": `${reserved}`, "passengers": `${passengers}`, "max_passengers": `${max_passengers}`}));
+                    await fs.writeFile(json_path, JSON.stringify({ "reserved": `${reserved}`, "passengers": `${passengers}`, "max_passengers": `${max_passengers}` }));
                     console.log('write success');
           } catch (err) {
                     console.error(err);
@@ -87,7 +91,7 @@ async function write_input_json(json_path, reserved = 0, passengers = 0, max_pas
 }
 
 async function read_input_json(json_path) {
-          try{
+          try {
                     const data = await fs.readFile(json_path, 'utf-8', (err) => {
                               if (err) {
                                         console.log(err);
@@ -100,4 +104,3 @@ async function read_input_json(json_path) {
                     console.error(err);
           }
 }
-        
