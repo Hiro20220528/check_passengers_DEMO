@@ -20,9 +20,11 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public'))); // publicフォルダの中身を静的ファイル
 
 const home_ip_address = '192.168.0.151';
-const lab_ip_address = '';
+const lab_ip_address = '192.168.100.21';
 
-const ip_address = home_ip_address; // ここのipアドレスを変更する
+// ここのipアドレスを変更する
+// const ip_address = home_ip_address; 
+const ip_address = lab_ip_address;
 
 // input.jsonのパス
 input_json_path = "./zkproof/count_js/input.json";

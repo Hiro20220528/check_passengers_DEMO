@@ -1,17 +1,24 @@
 
 let startBottom = document.getElementById('start');
-
+let booking_passengers = document.getElementById('booking_number');
+let witness = document.getElementById('witness');
+let make_proof = document.getElementById('make-proof');
+let booking_number;
 let user_id; // ユーザーのID
 let ride_count = 1; // 乗車ボタンが押された回数 (初期値は1)
-let booking_count;
 
 // 最初は乗車中ボタンを押せないようにする
 window.onload = function() {
           // user_idを取得する
           console.log('onload');
-          let booking_number = JSON.parse(localStorage.getItem('booking_number'));
+          booking_number = JSON.parse(localStorage.getItem('booking_number'));
           localStorage.clear();
           console.log(booking_number);
+
+          booking_passengers.innerHTML = `あなたの予約人数は ${booking_number} 人です。`;
+
+          witness.innerHTML = `現在の証明人数は ${ride_count} 人です。`;
+
           fetch('/user-id')
           .then(responce => responce.json())
           .then(data => {
@@ -38,5 +45,27 @@ startBottom.addEventListener('click', function() {
 socket.on('ride', () => {
           console.log('ride');
           ride_count += 1;
+          witness.innerHTML = `現在の証明人数は ${ride_count} 人です。`;
           // rideBottom.disabled = false;
 });
+
+make_proof.addEventListener('click', async function() {
+          console.log('make proof clicked');
+          console.log(booking_number, ride_count);
+          console.log(typeof(booking_number), typeof(ride_count));
+          // snarkjsで証明を生成する
+          // 証明を生成したら、proofを送信する
+          const { proof, publicSignals } = await generateProof();
+          
+});
+
+async function generateProof() {
+          const { proof, publicSignals } = await snarkjs.groth16.fullProve(
+                    // {"reserved": `${booking_number}`, "passengers": `${ride_count.toString()}`, "maximum": "6"},
+                    {reserved: Number(booking_number), passengers: ride_count, maximum: 6},
+                    "./count.wasm", // circuit
+                    "./multiplier2_0001.zkey" // proving key
+          );
+          console.log(proof, publicSignals);
+          return { proof, publicSignals };
+}

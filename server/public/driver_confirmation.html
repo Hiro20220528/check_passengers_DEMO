@@ -9,10 +9,15 @@
           <h2>乗車人数確認デモサイト</h2>
           <h3>運転手用</h3>
 
+          <p id="room_id"></p>
+          <p id="booking_number"></p>
+          <p id="witness"></p>
+
+          <h3>証明してください</h3>
+
           <h4>ステップ(1)</h4>
           <p>以下のQRコードから同乗者の人にサイトを共有してください。</p>
           
-          <p id="room_id"></p>
           <img id="qr_code" src="" width="300" height="300" alt="デモサイトのリンク">
 
           <h4>ステップ(2)</h4>
@@ -22,12 +27,16 @@
           <h4>ステップ(3)</h4>
           <p>5秒以内に同乗者の人は乗車中ボタンをタップしてください。</p>
 
+          <h4>ステップ(4)</h4>
+          <button id="make-proof" class="button">証明を生成</button>
+
 
           <h6>[注意]</h6>
-          <p>乗車する人全員でボタンをタップしてください。</p>
+          <p>同乗者の人全員でボタンをタップしてください。</p>
           <p>人数は予約時の人数と同じかカウントされています。</p>
 
           <script src="/socket.io/socket.io.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.6.11/build/snarkjs.min.js"></script>
           <script src="../js/front_socket_io.js"></script>
           <script src="../js/driver.js"></script>
 </body>
