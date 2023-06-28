@@ -101,6 +101,10 @@ app.get('/passengers/:id', (req, res) => {
           res.sendFile(__dirname + '/public/passengers_confirmation.html');
 });
 
+app.get('/verification.json', (req, res) => {
+          // ./public/zkp_lib/verification_key.jsonを返答する
+          res.sendFile(__dirname + '/public/zkp_lib/verification_key.json');
+});
 
 // サーバーを起動
 server.listen(PORT,() => {
