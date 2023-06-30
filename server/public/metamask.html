@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Metamask</title>
+</head>
+<body>
+          <h1>Metamask</h1>
+          
+          <!-- メタマスクと接続するボタン -->
+          <button id="connect">Connect</button>
+
+          
+          <script type="module">
+                    import { ethers } from "../../node_modules/ethers/dist/ethers.min.js";
+
+                    let provider;
+                    let signer;
+
+                    window.onload = async function() {
+                              // メタマスクのインストール確認
+                              if (typeof window.ethereum !== 'undefined') {
+                                        console.log('MetaMask is installed!');
+                                        provider = new ethers.BrowserProvider(window.ethereum)
+                                        signer = await provider.getSigner();
+                                        console.log(signer);
+                                        let balance =  await provider.getBalance(signer.getAddress())
+                                        console.log("balance", balance);
+                                        console.log(ethers.formatEther(balance));
+                              }
+                              else {
+                                        console.log('MetaMask is not installed!');
+                              }
+                    }
+                    
+                    // メタマスクと接続するボタン
+                    const connectButton = document.getElementById('connect');
+
+                    // メタマスクと接続するボタンを押した時の処理
+                    connectButton.addEventListener('click', async() => {
+                              try {
+                                        const acccounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+                                        if (acccounts.length > 0) {
+                                            console.log(acccounts[0]);
+                                        }
+                                    } catch (err) {
+                                        if (err.code === 4001) {
+                                            // EIP-1193 userRejectedRequest error
+                                            // ユーザーが接続を拒否するとここに来ます
+                                            console.log('Please connect to MetaMask.');
+                                        } else {
+                                            console.error(err);
+                                        }
+                                    }
+                    });
+
+
+          </script>
+</body>
+</html>
