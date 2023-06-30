@@ -1,3 +1,7 @@
+// socket.ioの設定
+const socket = io(); // サーバと接続する
+
+console.log('socket.io connected');
 
 let startBottom = document.getElementById('start');
 let booking_passengers = document.getElementById('booking_number');

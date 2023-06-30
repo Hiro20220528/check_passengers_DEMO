@@ -1,3 +1,7 @@
+// socket.ioの設定
+const socket = io(); // サーバと接続する
+
+console.log('socket.io connected');
 
 let rideBottom = document.getElementById('ride');
 let user_id; // ユーザーのID
