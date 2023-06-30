@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
-import "./verify.sol";
-import "openzeppelin-solidity/contracts/access/Ownable.sol";
+import "./verifier.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 pragma solidity ^0.6.11;
 

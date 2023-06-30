@@ -16,4 +16,9 @@ module.exports = {
       accounts: [`0x${PRIVATE_KEY}`],
     },
   },
+  paths: {
+    sources: "./blockchain/contracts",
+    artifacts: "./blockchain/artifacts",
+    cache: "./blockchain/cache",
+  },
 };
