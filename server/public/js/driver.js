@@ -73,6 +73,7 @@ async function generateProof() {
           const vkey = await fetch("verification.json").then(function (res) {
                     return res.json();
           });
+          
           console.log(vkey);
           const res = await snarkjs.groth16.verify(vkey, publicSignals, proof);
           console.log("result:", res);

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 import "./verifier.sol";
 // import "@openzeppelin/contracts/access/Ownable.sol";
-import "./Ownable.sol";
+import "./Ownable.sol"; // mumbai scanでの検証用
 
 pragma solidity ^0.6.11;
 
@@ -33,11 +33,15 @@ contract CarShareCreditRatingContract is Verifier, Ownable{
 
     // サーバーがaddressにパスワードをかけ、全ての人が検証できないようにする
     mapping (address => bytes32) permissionAddress;
+    mapping (address => uint) permissionTime;
+    uint32 permissionLimitms = 3600; // 1時間(3600秒)
 
     // *******************************************************************************************************************************
 
     // 証明する
     function tryProof(uint[2] memory a, uint[2][2] memory b, uint[2] memory c, uint[1] memory publicInput, string  memory planeText) public {
+        require(permissionTime[msg.sender] > block.timestamp);
+
         require(keccak256(abi.encodePacked(permissionAddress[msg.sender])) == keccak256(abi.encodePacked(keccak256(abi.encodePacked(planeText)))));
 
         // ゼロ知識証明をトライする
@@ -48,11 +52,14 @@ contract CarShareCreditRatingContract is Verifier, Ownable{
             } else {
                 rentalCount[msg.sender] = rentalCount[msg.sender].add(1);
             }
-            noticeRsesult(success);
+            noticeRsesult(success); // event
         } catch {
             rentalCount[msg.sender] = rentalCount[msg.sender].add(1);
-            noticeRsesult(false);
+            noticeRsesult(false); // event
         }
+        // 一度しかトライできないようにする
+        // 今の時間のタイムタンプをハッシュ化したものをパスワードとして設定する
+        permissionAddress[msg.sender] = keccak256(abi.encodePacked(block.timestamp));
     }
 
     // *******************************************************************************************************************************
@@ -65,6 +72,13 @@ contract CarShareCreditRatingContract is Verifier, Ownable{
         // ハッシュ値を知っている人(user)のみ証明をトライできるようにする
         permissionAddress[userAddress] = hashed_text;
         emit getPermission(userAddress); // サーバー側へ許可が与えられたことを知らせる
+
+        // タイムスタンプと(permissionLimitms 秒)を足したものをパスワードとして設定する
+        permissionTime[userAddress] = uint32(block.timestamp + permissionLimitms);
+    }
+
+    function changePermissionLimitms(uint32 _permissionLimitms) external onlyOwner {
+        permissionLimitms = _permissionLimitms;
     }
 
     // 新規ユーザーの場合ユーザーidを付与する
@@ -105,12 +119,26 @@ contract CarShareCreditRatingContract is Verifier, Ownable{
         return  userCreditHistory;
     }
 
+    // permissionLimitmsを返す
+    function getPermissionLimitms() public view returns(uint32) {
+        return permissionLimitms;
+    }
+
+    // 利用ユーザーの数を返す
+    function getUserNumber() public view returns(uint16) {
+        return (userNumber - 1);
+    }
+
     // 全てのユーザーに対して行う
     function getAllUserCreditHistory() public view returns(uint16[2][] memory) {
-        uint16[2][] memory allUserCreditHistory = new uint16[2][](userNumber);
-        for(uint16 i = 0; i < userNumber - 1; i++){
-            allUserCreditHistory[i] = getUserCreditHistory( idToaddress[i] );
+        if(userNumber == 1){
+            return new uint16[2][](1);
+        }else {
+            uint16[2][] memory allUserCreditHistory = new uint16[2][](userNumber - 1);
+            for(uint16 i = 0; i < userNumber - 1; i++){
+                allUserCreditHistory[i] = getUserCreditHistory( idToaddress[i+1] );
+            }
+            return allUserCreditHistory;
         }
-        return allUserCreditHistory;
     }
 }
