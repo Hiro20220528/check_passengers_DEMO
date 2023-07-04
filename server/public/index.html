@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>zk-proofデモサイト</title>
+          <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
           <h1>zk-proofデモサイト</h1>
 
           <h2>乗車人数を確認し、ブロックチェーン上で検証する</h2>
+
+          
+
+          <input type="text" id="unSaftyPrivateKey" style="display: none;" placeholder="秘密鍵を入力してください">
+          <button id="privateKeyButton" style="display: none;">Connect</button>
+          <button id="disconnectButton" style="display: none;">接続を解除</button>
 
           <h3>サイトのリンク</h3>
 
@@ -16,15 +25,59 @@
           <!-- ユーザーの信頼度を確認するサイトのリンク -->
           <!-- 乗車人数予約サイトのリンク -->
           <ul>
-          
+
                     <!-- <li><a href="https://mumbai.polygonscan.com/address/0x8df366d770222061e0bbcbe8c122b8834206100f#code">polygon scanのリンク</a></li> -->
-                    <li><a href="https://mumbai.polygonscan.com/address/0x57492274381BBe996508AC0F6e0FBF40DC9817Ed#code">polygon scanのリンク</a></li>
+                    <li><a href="https://mumbai.polygonscan.com/address/0x57492274381BBe996508AC0F6e0FBF40DC9817Ed#code">polygon
+                                        scanのリンク</a></li>
                     <li><a href="./user_credit.html">ユーザーの信頼度確認ページ</a></li>
                     <li><a href="./booking.html">乗車人数予約ページ</a></li>
           </ul>
 
           <h3>使い方・説明</h3>
-          
 
+          <div class="frame frame-red">
+                    <div class="frame-title caution">
+                              CAUTION
+                    </div>
+                    <p>
+                              実験のため漏洩しても問題ない秘密鍵を使用してください。
+                    </p>
+          </div>
+
+          <script>
+                    const privateKeyButton = document.getElementById('privateKeyButton');
+                    const unSaftyPrivateKey = document.getElementById('unSaftyPrivateKey');
+                    const disconnectButton = document.getElementById('disconnectButton');
+
+                    window.onload = function () {
+                              const privateKey = localStorage.getItem('unSaftyPrivateKey');
+                              console.log(privateKey);
+                              if (privateKey) {
+                                        unSaftyPrivateKey.style.display = 'none';
+                                        privateKeyButton.style.display = 'none';
+                                        disconnectButton.style.display = 'block';
+                              }else {
+                                        unSaftyPrivateKey.style.display = 'inline-block';
+                                        privateKeyButton.style.display = 'inline-block';
+                                        disconnectButton.style.display = 'none';
+                              }
+
+                    }
+
+                    privateKeyButton.addEventListener('click', () => {
+                              const privateKey = unSaftyPrivateKey.value;
+                              if (privateKey.length !== 64) {
+                                        alert('秘密鍵の桁数が正しくありません');
+                                        return;
+                              }
+                              localStorage.setItem('unSaftyPrivateKey', JSON.stringify(unSaftyPrivateKey.value));
+                              unSaftyPrivateKey.style.display = 'none';
+                    });
+
+                    disconnectButton.addEventListener('click', () => {
+                              alert('接続を解除するには、ブラウザのキャッシュを削除してください');
+                    });
+          </script>
 </body>
+
 </html>

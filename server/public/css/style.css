@@ -1,0 +1,35 @@
+/* ここから 注意書きのテンプレート */
+.frame {
+          width: 80%;
+          margin: 30px auto 20px;
+          padding: 30px 20px 0;
+          border: 3px solid #aaa;
+          position: relative;
+          border-radius: 3px;
+          background-color: #fff;
+}
+
+.frame-title {
+          position: absolute;
+          top: -13px;
+          left: 20px;
+          padding: 0 5px;
+          background-color: #fff;
+}
+
+.frame-title .fa {
+          margin-right: 5px;
+}
+
+.caution {
+          background-color: #ff4500;
+          border: 2px solid #ff4500;
+          color: #fff;
+          border-radius: 3px;
+}
+
+.frame-red {
+          border-color: #ff4500;
+}
+
+/* ここまで */

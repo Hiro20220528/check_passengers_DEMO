@@ -14,6 +14,7 @@ const qr_dir = path.join(__dirname, 'public/qrcode/'); // qrコードを保存�
 // qr_dirの絶対パス
 // const qr_dir_path = path.join(__dirname, 'public/qrcode');
 const bodyParser = require('body-parser'); // post bodyを受け取る
+const { availableParallelism } = require('os');
 // const { rejects } = require('assert'); // jsonファイルを読み込むために必要
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -23,8 +24,8 @@ const home_ip_address = '192.168.0.151';
 const lab_ip_address = '192.168.100.21';
 
 // ここのipアドレスを変更する
-// const ip_address = home_ip_address; 
-const ip_address = lab_ip_address;
+const ip_address = home_ip_address; 
+// const ip_address = lab_ip_address;
 
 // input.jsonのパス
 input_json_path = "./zkproof/count_js/input.json";
@@ -58,6 +59,11 @@ app.get('/', (req, res) => {
 app.get('/booking', (req, res) => {
           res.sendFile(__dirname + '/public/booking.html');
 });
+
+app.get('/metamask', (req, res) => {
+          res.sendFile(__dirname + '/public/metamask.html');
+});
+
 
 // 乗車人数確定画面へpost
 app.post('/driver-confirm', async (req, res) => {
