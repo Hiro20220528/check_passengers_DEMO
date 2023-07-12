@@ -30,9 +30,11 @@
           <p>5秒以内に同乗者の人は乗車中ボタンをタップしてください。</p>
 
           <h4>ステップ(4)</h4>
-          <button id="make-proof" class="button">証明を生成</button>
+          <label for="">秘密のパスワード：</label>
+          <input type="text" id="secret_text">
+          <button id="make-proof" class="button">証明する</button>
 
-          <button id="json_bottom" class="button">証明.json</button>
+
 
 
 
@@ -42,6 +44,7 @@
 
           <script src="/socket.io/socket.io.js"></script>
           <script src="https://cdn.jsdelivr.net/npm/snarkjs@0.6.11/build/snarkjs.min.js"></script>
-          <script src="./js/driver.js"></script>
+          <!-- <script type="module" src="./js/contract_info.js"></script> -->
+          <script type="module" src="./js/driver.js"></script>
 </body>
 </html>

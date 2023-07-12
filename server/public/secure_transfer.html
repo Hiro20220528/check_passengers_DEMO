@@ -4,12 +4,80 @@
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
           <title>秘密鍵を安全に転送します</title>
+          <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
-          秘密鍵を安全に転送します。
+          <div class="frame frame-red">
+                    <div class="frame-title caution">
+                              CAUTION
+                    </div>
+                    <p>
+                              実験のため漏洩しても問題ない秘密鍵を使用してください。
+                    </p>
+          </div>
+          
+          <h1>-現在- 暗号化は未実装です</h1>
+          <h2>秘密鍵を安全に転送します</h2>
+          <h3>共通鍵を一時的に忘れないようにしてください</h3>
 
+          <input type="text" id="unSaftyPrivateKey" style="display: block;" placeholder="秘密鍵を入力してください" size="64">
+          <input type="text" id="symmetric-key" style="display: block;" placeholder="共通鍵を入力してください" size="64">
+          <button id="privateKeyButton" style="display: block;">暗号化</button>
+
+          <canvas id="qr"></canvas>
+
+
+          <h3>安全な方式ではありません</h3>
+          <input type="text" id="unSaftyPrivateKey-demo" style="display: block;" placeholder="秘密鍵を入力してください" size="64" autocomplete="off">
+          <button id="privateKeyButton-unsafety" style="display: block;">QRコードを生成</button>
+
+          <canvas id="qr-unsafety"></canvas>
+
+          <script src="./js/qrious/dist/qrious.js"></script> 
           <script>
+
                     // 秘密鍵を入力し、それを暗号化し、qrコードにして表示する
+                    const privateKeyButton = document.getElementById('privateKeyButton');
+                    const unSaftyPrivateKey = document.getElementById('unSaftyPrivateKey');
+                    const symmetricKeyVutton = document.getElementById('symmetric-key');
+                    const qr = document.getElementById('qr');
+
+                    privateKeyButton.onclick = function () {
+                              alert('現在暗号化して安全に転送する方式は実装中です');
+                              return;
+                              const privateKey = unSaftyPrivateKey.value;
+                              const symmetricKey = symmetricKeyVutton.value;
+                              
+                              //if (privateKey.length !== 64) {
+                              //          alert('秘密鍵の桁数が正しくありません');
+                              //          return;
+                              //}
+                              //if (symmetricKey.length === 0) {
+                              //          alert('共通鍵を入力してください');
+                              //          return;
+                              //}
+                              let qr = new QRious({
+                                        element: document.getElementById('qr'),
+                                        size: 200,
+                                        value: privateKey,
+                              });
+
+                              // フォームをクリアにする
+                              unSaftyPrivateKey.value = '';
+                    }
+
+                    
+                    const privateKeyButtonUnsafety = document.getElementById('privateKeyButton-unsafety');
+                    const unSaftyPrivateKey_demo = document.getElementById('unSaftyPrivateKey-demo');
+                    privateKeyButtonUnsafety.onclick = function () {
+                              const privateKey = unSaftyPrivateKey_demo.value;
+                              console.log(privateKey);
+                              let qr = new QRious({
+                                        element: document.getElementById('qr-unsafety'),
+                                        size: 200,
+                                        value: privateKey,
+                              });
+                    }
           </script>
 </body>
 </html>

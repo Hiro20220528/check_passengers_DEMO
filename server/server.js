@@ -4,6 +4,7 @@ const http = require('http')
 const server = http.createServer(app);
 // const io = require('socket.io')(server);
 require('./server_socket_io')(server);
+require("dotenv").config();
 const PORT = 3000;
 const path = require('path');
 const fs = require('fs').promises; // jsonファイルを読み込むために必要
@@ -14,6 +15,7 @@ const qr_dir = path.join(__dirname, 'public/qrcode/'); // qrコードを保存�
 // qr_dirの絶対パス
 // const qr_dir_path = path.join(__dirname, 'public/qrcode');
 const bodyParser = require('body-parser'); // post bodyを受け取る
+app.use(express.json());
 const { availableParallelism } = require('os');
 // const { rejects } = require('assert'); // jsonファイルを読み込むために必要
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -24,7 +26,7 @@ const home_ip_address = '192.168.0.151';
 const lab_ip_address = '192.168.100.21';
 
 // ここのipアドレスを変更する
-const ip_address = home_ip_address; 
+const ip_address = home_ip_address;
 // const ip_address = lab_ip_address;
 
 // input.jsonのパス
@@ -60,21 +62,73 @@ app.get('/booking', (req, res) => {
           res.sendFile(__dirname + '/public/booking.html');
 });
 
-app.get('/metamask', (req, res) => {
-          res.sendFile(__dirname + '/public/metamask.html');
+app.get('/secretkey-transfer', (req, res) => {
+          res.sendFile(__dirname + '/public/secure_transfer.html');
 });
+
+const { ethers, JsonRpcProvider }  = require('ethers');
+const contractInfo = require('./contractInfo.js');
+
+const privateKey = process.env.PRIVATE_KEY;
+console.log(privateKey);
+
+const wallet = new ethers.Wallet(privateKey);
+const provider = new JsonRpcProvider(contractInfo.rpc_url);
+const walletConnected = wallet.connect(provider);
+console.log(wallet.address);
+const creditContract = new ethers.Contract(contractInfo.contractAddress, contractInfo.contractABI, walletConnected);
+console.log('ok');
+
+async function main() {
+          const tx = await creditContract.getUserAddress(1);
+          console.log(tx);
+
+          const givePermission = await creditContract.givePermission(
+                    "0x1c9dED1E29D989917Cd91f5272a21E160054EF14",
+                    "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8"
+          );
+
+          await givePermission.wait();
+          console.log("Permission given");
+}
+
+// main();
+
+
 
 
 // 乗車人数確定画面へpost
 app.post('/driver-confirm', async (req, res) => {
-          const count = 0; // 乗員がタップした回数を数える数を初期化
-          const booking_number = req.body.passengers; // 乗車人数を取得
+          const hashed_text = req.body.hashed_text;
+          const wallet_address = req.body.wallet_address;
+          console.log(hashed_text);
+          console.log(wallet_address);
 
-          console.log(booking_number);
+          try {
+                    const givePermission = await creditContract.givePermission(
+                              wallet_address,
+                              hashed_text
+                    );
+                    await givePermission.wait();
+                    console.log("Permission given");
+                    res.json({ status: "ok" });
+          } catch (error) {
+                    console.log(error);
+                    res.json({ status: "ng" });
+          }
+          
 
+          // console.log(booking_number);
+          // if (booking_number == '') {
+          //           res.sendFile(__dirname + '/public/booking.html');
+          //           return;
+          // }else {
+          //           res.sendFile(__dirname + '/public/driver_confirmation.html');
+          // }
+          // res.sendFile(__dirname + '/public/driver_confirmation.html');
           // input.jsonを生成する
-          await write_input_json(input_json_path, booking_number, null, max_passengers);
-          res.sendFile(__dirname + '/public/driver_confirmation.html');
+          // await write_input_json(input_json_path, booking_number, null, max_passengers);
+
 });
 
 app.get('/user-id', (req, res) => {
@@ -98,6 +152,8 @@ app.get('/user-id', (req, res) => {
 
 // 乗車人数確定画面 get
 app.get('/driver-confirm', (req, res) => {
+          // リロードすると元の画面に戻す
+          // res.sendFile(__dirname + '/public/driver_confirmation.html');
           res.sendFile(__dirname + '/public/driver_confirmation.html');
 });
 
@@ -113,7 +169,7 @@ app.get('/verification.json', (req, res) => {
 });
 
 // サーバーを起動
-server.listen(PORT,() => {
+server.listen(PORT, () => {
           console.log('lisning on *:3000');
 });
 

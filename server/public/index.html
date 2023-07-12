@@ -9,17 +9,17 @@
 </head>
 
 <body>
-          <h1>zk-proofデモサイト</h1>
+          <h1>zk-proofデモ (ベータ)</h1>
 
           <h2>乗車人数を確認し、ブロックチェーン上で検証する</h2>
 
-          
 
-          <input type="text" id="unSaftyPrivateKey" style="display: none;" placeholder="秘密鍵を入力してください">
+
+          <input type="text" id="unSaftyPrivateKey" style="display: none;" placeholder="秘密鍵を入力してください" autocomplete="off">
           <button id="privateKeyButton" style="display: none;">Connect</button>
           <button id="disconnectButton" style="display: none;">接続を解除</button>
 
-          <h3>サイトのリンク</h3>
+          <h3>リンク</h3>
 
           <!-- polygon scanのリンク -->
           <!-- ユーザーの信頼度を確認するサイトのリンク -->
@@ -31,6 +31,7 @@
                                         scanのリンク</a></li>
                     <li><a href="./user_credit.html">ユーザーの信頼度確認ページ</a></li>
                     <li><a href="./booking.html">乗車人数予約ページ</a></li>
+                    <li><a href="./secure_transfer.html">秘密鍵転送ページ</a></li>
           </ul>
 
           <h3>使い方・説明</h3>
@@ -51,12 +52,12 @@
 
                     window.onload = function () {
                               const privateKey = localStorage.getItem('unSaftyPrivateKey');
-                              console.log(privateKey);
+                              // console.log(privateKey);
                               if (privateKey) {
                                         unSaftyPrivateKey.style.display = 'none';
                                         privateKeyButton.style.display = 'none';
                                         disconnectButton.style.display = 'block';
-                              }else {
+                              } else {
                                         unSaftyPrivateKey.style.display = 'inline-block';
                                         privateKeyButton.style.display = 'inline-block';
                                         disconnectButton.style.display = 'none';
@@ -72,6 +73,8 @@
                               }
                               localStorage.setItem('unSaftyPrivateKey', JSON.stringify(unSaftyPrivateKey.value));
                               unSaftyPrivateKey.style.display = 'none';
+                              privateKeyButton.style.display = 'none';
+                              disconnectButton.style.display = 'block';
                     });
 
                     disconnectButton.addEventListener('click', () => {

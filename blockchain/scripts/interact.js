@@ -1,4 +1,4 @@
-API_KEY = process.env.API_KEY;
+const API_KEY = process.env.API_KEY;
 const PRIVATE_KEY = process.env.PRIVATE_KEY;
 const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS;
 
@@ -30,11 +30,11 @@ async function main() {
           // console.log(test);
 
           let text = "1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8";
-          // const testPermission = await CarShareCreditRatingContract.givePermission(
-          //           "0x9a9f8B37f4CfEf89b578a9F248C8ed9c7F1f7236",
-          //           "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8" // hello
-          // );
-          // await testPermission.wait();
+          const testPermission = await CarShareCreditRatingContract.givePermission(
+                    "0x9a9f8B37f4CfEf89b578a9F248C8ed9c7F1f7236",
+                    "0x1c8aff950685c2ed4bc3174f3472287b56d9517b9c948127319a09a7a36deac8" // hello
+          );
+          await testPermission.wait();
 
           const allMember = await CarShareCreditRatingContract.getAllUserCreditHistory();
           console.log(allMember);

@@ -1,8 +1,10 @@
-export const contractAddress = "0x57492274381BBe996508AC0F6e0FBF40DC9817Ed";
+const contractAddress = "0x57492274381BBe996508AC0F6e0FBF40DC9817Ed";
 
-export const rpc_url = 'https://rpc-mumbai.maticvigil.com/';
+const rpc_url = 'https://rpc-mumbai.maticvigil.com/';
+// const rpc_url = 'https://polygon-mumbai.infura.io/v3/4458cf4d1689497b9a38b1d6bbf05e78';
 
-export const contractABI = [
+
+const contractABI = [
           {
                     "anonymous": false,
                     "inputs": [
@@ -314,3 +316,11 @@ export const contractABI = [
                     "type": "function"
           }
 ];
+
+// 別ファイルから変数へのアクセス
+module.exports = {
+          'contractAddress': contractAddress,
+          'rpc_url': rpc_url,
+          'contractABI': contractABI,
+
+}
